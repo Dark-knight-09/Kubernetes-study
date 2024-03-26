@@ -1,0 +1,2 @@
+## kubernetes
+kubernetes is a container orchestration tool that helps in managing containerized applications in different environments. It is an open-source platform developed by google, which automates the deployment, scaling, and management of containerized applications.
