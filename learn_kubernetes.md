@@ -28,6 +28,17 @@ commands:
 
 - kubectl version: It displays the client and server version of kubectl.
 - kubectl help: It displays the help information for kubectl.
+- kubectl get: It displays the resources in the cluster.
+- kubectl create: It creates a resource in the cluster.
+- kubectl apply: It applies the configuration to the cluster.
+- kubectl delete: It deletes a resource from the cluster.
+- kubectl describe: It displays detailed information about a resource.
+- kubectl logs: It displays the logs of a container in a pod.
+- kubectl exec: It executes a command in a container in a pod.
+- kubectl run: It creates a new pod or deployment.
+- kubectl expose: It exposes a deployment as a service.
+- kubectl scale: It scales a deployment.
+
 
 - kubectl get nodes: It displays the nodes in the cluster. (less information)
 - kubectl get nodes -o wide: It displays the nodes in the cluster with additional information.
