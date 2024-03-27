@@ -24,15 +24,22 @@ The worker node consists of the following components:
 # K8 Commands
 kubectl: It is a command-line tool used to interact with the kubernetes cluster. 
 
+types of resources in k8s:
+1. Pods : smallest unit of deployment in k8s
+2. ReplicaSets : ensures specific number of pods are running in cluster
+3. Deployments : manages ReplicaSets and Pods
+4. Services : provides networking to the pods
+
+
 commands:
 
 - kubectl version: It displays the client and server version of kubectl.
 - kubectl help: It displays the help information for kubectl.
-- kubectl get: It displays the resources in the cluster.
+- kubectl get <resource_type> <resource_name>: It displays the resources in the cluster.
 - kubectl create: It creates a resource in the cluster.
 - kubectl apply: It applies the configuration to the cluster.
-- kubectl delete: It deletes a resource from the cluster.
-- kubectl describe: It displays detailed information about a resource.
+- kubectl delete <resource_type> <resource_name>: It deletes a resource from the cluster.
+- kubectl describe <resource_type> <resource_name>: It displays detailed information about a resource.
 - kubectl logs: It displays the logs of a container in a pod.
 - kubectl exec: It executes a command in a container in a pod.
 - kubectl run: It creates a new pod or deployment.
@@ -45,10 +52,21 @@ commands:
 - kubectl get pods: It displays the pods in the cluster.
 - kubectl get services: It displays the services in the cluster.
 
+- kubectl get deployments: It displays the deployments in the cluster.
+- kubectl get replicasets: It displays the replica sets in the cluster.
+- kubectl create deployment <deployment-name> --image=<image-name>: It creates a deployment with the specified image.
+- kubectl expose deployment <deployment-name> --port=<port>: It exposes a deployment as a service on the specified port.
 
 
 
 
+- kubectl create -f <filename>: It creates a resource from a file.
+- kubectl apply -f <filename>: It applies the configuration from a file.
+- kubectl delete -f <filename>: It deletes a resource from a file.
+- kubectl describe <resource-name>: It displays detailed information about a resource.
+- kubectl scale --replicas=<number> <fileename>: It scales a deployment to the specified number of replicas.
+
+- kubectl logs <pod-name>: It displays the logs of a pod.
 
 
 
@@ -63,7 +81,7 @@ commands:
     - name: It specifies the name of the resource.
     - labels: It specifies the labels of the resource. (can contain user created multiple key-value pairs)
 
-- spec: It specifies the specification of the resource.
+- spec: It specifies the specification depending on resource (Pod, ReplicaSet, Service,..).
     - containers: the containers running in the pod.
         - name: It specifies the name of the container.
         - image: It specifies the image of the container.
@@ -79,7 +97,52 @@ commands:
         - hostNetwork: It specifies whether the pod should use the host network.
     
 
-basic example:
+# NOTE: 
+- apiVersion specifies which version or group of k8 api is used for communication between the services. 
+- different kind of api versions:s
+    1. core: v1
+    kind: (types of resources in core api version)
+        - Pod
+        - Service
+        - Namespace
+        - Event
+        - Endpoints
+        - Node
+        - Secret
+        - ConfigMap
+        - PersistentVolume
+        - PersistentVolumeClaim
+
+    2. apps: apps/v1
+    kind: (types of resources in apps api version)
+        - Deployment
+        - ReplicaSet
+        - StatefulSet
+        - DaemonSet
+
+    3. batch: batch/v1
+    kind: (types of resources in batch api version)
+        - Job
+        - CronJob
+
+    4. autoscaling: autoscaling/v1
+    kind: (types of resources in autoscaling api version)
+        - HorizontalPodAutoscaler
+
+    5. networking: networking.k8s.io/v1
+    kind: (types of resources in networking api version)
+        - NetworkPolicy
+        - Ingress
+
+    6. storage: storage.k8s.io/v1
+    kind: (types of resources in storage api version)
+        - StorageClass
+        - VolumeAttachment
+        - StorageState
+
+
+
+basic example for pod yaml file:
 '''
 apiVersion: v1
 kind: Pod
@@ -90,3 +153,42 @@ spec:
     - name: mycontainer
         image: nginx
     '''
+
+basic example for service yaml file:
+'''
+apiVersion: v1
+kind: Service
+metadata:
+  name: myservice   
+spec:
+    selector:
+        app: myapp
+    ports:
+        - protocol: TCP
+        port: 80
+        targetPort: 80
+    type: LoadBalancer
+    '''
+
+basic example for replica set yaml file:
+'''
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myreplicaset
+
+spec:
+    replicas: 3
+    selector:
+        matchLabels:
+            app: myapp
+    template:
+        metadata:
+            labels:
+                app: myapp
+        spec:
+            containers:
+            - name: mycontainer
+                image: nginx
+    '''
+
