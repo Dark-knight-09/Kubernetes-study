@@ -1,5 +1,5 @@
 ## kubernetes
-kubernetes is a container orchestration tool that helps in managing containerized applications in different environments. It is an open-source platform developed by google, which automates the deployment, scaling, and management of containerized applications.
+kubernetes is a container orchestration tool that helps in managing containerized applications in different environments.is an open-source platform developed by google, which automates the deployment, scaling, and management of containerized applications.
 
 # Kubernetes Architecture
 Kubernetes architecture consists of a master node and a worker node. 
@@ -8,65 +8,93 @@ Kubernetes architecture consists of a master node and a worker node.
 
 # Master Node
 The master node consists of the following components:
-- API Server: It is the front-end of the control plane. It exposes the kubernetes API, which is used by the clients to interact with the cluster.
-- Controller Manager: It is responsible for running the controller processes, which are responsible for maintaining the desired state of the cluster.
-- Scheduler: It is responsible for scheduling the pods on the worker nodes based on the resource requirements and constraints.
-- etcd: It is a distributed key-value store that stores the cluster state. 
+- API Server:is the front-end of the control plane.exposes the kubernetes API, which is used by the clients to interact with the cluster.
+- Controller Manager:is responsible for running the controller processes, which are responsible for maintaining the desired state of the cluster.
+- Scheduler:is responsible for scheduling the pods on the worker nodes based on the resource requirements and constraints.
+- etcd:is a distributed key-value store that stores the cluster state. 
 
 # Worker Node
 The worker node consists of the following components:
-- Kubelet: It is responsible for managing containers running on the node and communication between worker node and master node.
-- Kube Proxy: It is responsible for routing traffic to the pods from outside the cluster (basically internet).
+- Kubelet:is responsible for managing containers running on the node and communication between worker node and master node.
+- Kube Proxy:is responsible for routing traffic to the pods from outside the cluster (basically internet).
 - Container Runtime: Runtime used to run the containers.(DOCKER or containerd)
-- Pod: It is the smallest unit of deployment in kubernetes. It consists of one or more containers that share the same network and storage. (running containers)
+- Pod:is the smallest unit of deployment in kubernetes.consists of one or more containers that share the same network and storage. (running containers)
 
 
 # K8 Commands
-kubectl: It is a command-line tool used to interact with the kubernetes cluster. 
+kubectl:is a command-line tool used to interact with the kubernetes cluster. 
 
 types of resources in k8s:
 1. Pods : smallest unit of deployment in k8s
 2. ReplicaSets : ensures specific number of pods are running in cluster
 3. Deployments : manages ReplicaSets and Pods
 4. Services : provides networking to the pods
+5. Nodes : physical or virtual machines in the cluster
 
 
 commands:
 
-- kubectl version: It displays the client and server version of kubectl.
-- kubectl help: It displays the help information for kubectl.
-- kubectl get <resource_type> <resource_name>: It displays the resources in the cluster.
-- kubectl create: It creates a resource in the cluster.
-- kubectl apply: It applies the configuration to the cluster.
-- kubectl delete <resource_type> <resource_name>: It deletes a resource from the cluster.
-- kubectl describe <resource_type> <resource_name>: It displays detailed information about a resource.
-- kubectl logs: It displays the logs of a container in a pod.
-- kubectl exec: It executes a command in a container in a pod.
-- kubectl run: It creates a new pod or deployment.
-- kubectl expose: It exposes a deployment as a service.
-- kubectl scale: It scales a deployment.
+- kubectl version:displays the client and server version of kubectl.
+- kubectl help:displays the help information for kubectl.
+- kubectl get <resource_type> <resource_name>:displays the resources in the cluster.
+- kubectl create:creates a resource in the cluster.
+- kubectl apply:applies the configuration to the cluster.
+- kubectl delete <resource_type> <resource_name>:deletes a resource from the cluster.
+- kubectl describe <resource_type> <resource_name>:displays detailed information about a resource.
+- kubectl logs:displays the logs of a container in a pod.
+- kubectl exec:executes a command in a container in a pod.
+- kubectl run:creates a new pod or deployment.
+- kubectl expose:exposes a deployment as a service.
+- kubectl scale:scales a deployment.
 
 
-- kubectl get nodes: It displays the nodes in the cluster. (less information)
-- kubectl get nodes -o wide: It displays the nodes in the cluster with additional information.
-- kubectl get pods: It displays the pods in the cluster.
-- kubectl get services: It displays the services in the cluster.
+- kubectl get nodes: displays the nodes in the cluster. (less information)
+- kubectl get nodes -o wide: displays the nodes in the cluster with additional information.
+- kubectl get pods: displays the pods in the cluster.
+- kubectl get services:displays the services in the cluster.
+- kubectl get deployments:  displays the deployments in the cluster.
+- kubectl get replicasets:  displays the replica sets in the cluster.
 
-- kubectl get deployments: It displays the deployments in the cluster.
-- kubectl get replicasets: It displays the replica sets in the cluster.
-- kubectl create deployment <deployment-name> --image=<image-name>: It creates a deployment with the specified image.
-- kubectl expose deployment <deployment-name> --port=<port>: It exposes a deployment as a service on the specified port.
+1. pods: smallest unit of deployment in k8s.consists of one or more containers that share the same network and storage.
+- kubectl create pod <pod-name> --image=<image-name>: creates a pod with the specified image.
+- kubectl create pod -f <filename>: creates a pod from a file.
+- kubectl describe pod <pod-name>: displays detailed information about a pod.
+- kubectl exec -it <pod-name> -- /bin/bash: executes a command in a pod.
+- kubectl logs <pod-name>: displays the logs of a pod.
+
+2. ReplicaSets: is collection of same pods (number of pods pre-defined in a file), ensures that a specific number of pod are running in the cluster.
+- kubectl get rs: displays the replica sets in the cluster.
+- kubectl describe rs <replicaset-name>: displays detailed information about a replica set.
+
+3. Deployments: provide features for updates or rollbacks in ReplicaSets and Pods.Deployment is a higher level of abstraction than ReplicaSet.
+- kubectl get deployments: displays the deployments in the cluster.
+- kubectl create  deployment -f <filename>:creates a deployment from a file.
+- kubectl apply -f <filename>:applies the configuration from a file.
+- kubectl expose deployment <deployment-name> --port=<port>:exposes a deployment as a service on the specified port.
+- kubectl create deployment <deployment-name> --image=<image-name>:creates a deployment with the specified image.
+
+# Note: multiple deployments can be created in a single file using '---' separator.
+example: 
+            ''' apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+                name: deployment1
+            spec:
+                # specification for deployment1
+            ---
+            apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+                name: deployment2
+            spec:
+                # specification for deployment2 '''
 
 
 
+- kubectl describe <resource-name>:displays detailed information about a resource.
+- kubectl scale --replicas=<number> <fileename>:scales a deployment to the specified number of replicas.
 
-- kubectl create -f <filename>: It creates a resource from a file.
-- kubectl apply -f <filename>: It applies the configuration from a file.
-- kubectl delete -f <filename>: It deletes a resource from a file.
-- kubectl describe <resource-name>: It displays detailed information about a resource.
-- kubectl scale --replicas=<number> <fileename>: It scales a deployment to the specified number of replicas.
-
-- kubectl logs <pod-name>: It displays the logs of a pod.
+- kubectl logs <pod-name>:displays the logs of a pod.
 
 
 
@@ -75,26 +103,26 @@ commands:
 
 # K8 yaml file structure:
 
-- apiVersion: It specifies the version of the kubernetes API.
-- kind: It specifies the type of the kubernetes resource.
-- metadata: It specifies the metadata of the resource like name, labels, etc.
-    - name: It specifies the name of the resource.
-    - labels: It specifies the labels of the resource. (can contain user created multiple key-value pairs)
+- apiVersion:specifies the version of the kubernetes API.
+- kind:specifies the type of the kubernetes resource.
+- metadata:specifies the metadata of the resource like name, labels, etc.
+    - name:specifies the name of the resource.
+    - labels:specifies the labels of the resource. (can contain user created multiple key-value pairs)
 
-- spec: It specifies the specification depending on resource (Pod, ReplicaSet, Service,..).
+- spec:specifies the specification depending on resource (Pod, ReplicaSet, Service,..).
     - containers: the containers running in the pod.
-        - name: It specifies the name of the container.
-        - image: It specifies the image of the container.
-        - ports: It specifies the ports exposed by the container.
-        - volumeMounts: It specifies the volumes mounted by the container.
-    - volumes: It specifies the volumes used by the pod.
-        - name: It specifies the name of the volume.
-        - emptyDir: It specifies an empty directory volume.
-        - hostPath: It specifies a host path volume.
-        - secret: It specifies a secret volume.
-        - configMap: It specifies a config map volume.
-        - persistentVolumeClaim: It specifies a persistent volume claim volume.
-        - hostNetwork: It specifies whether the pod should use the host network.
+        - name:specifies the name of the container.
+        - image:specifies the image of the container.
+        - ports:specifies the ports exposed by the container.
+        - volumeMounts:specifies the volumes mounted by the container.
+    - volumes:specifies the volumes used by the pod.
+        - name:specifies the name of the volume.
+        - emptyDir:specifies an empty directory volume.
+        - hostPath:specifies a host path volume.
+        - secret:specifies a secret volume.
+        - configMap:specifies a config map volume.
+        - persistentVolumeClaim:specifies a persistent volume claim volume.
+        - hostNetwork:specifies whether the pod should use the host network.
     
 
 # NOTE: 
