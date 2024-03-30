@@ -20,6 +20,8 @@ The worker node consists of the following components:
 - Container Runtime: Runtime used to run the containers.(DOCKER or containerd)
 - Pod:is the smallest unit of deployment in kubernetes.consists of one or more containers that share the same network and storage. (running containers)
 
+## NOTE: 
+In Kubernetes, resources are identified by their kind and metadata.name fields. This means that the configuration can be in any file, and as long as the kind and metadata.name match an existing resource, that resource will be updated. If the kind and metadata.name do not match any existing resource, a new resource will be created.
 
 # K8 Commands
 kubectl:is a command-line tool used to interact with the kubernetes cluster. 
@@ -39,6 +41,7 @@ commands:
 - kubectl get <resource_type> <resource_name>:displays the resources in the cluster.
 - kubectl create:creates a resource in the cluster.
 - kubectl apply:applies the configuration to the cluster.
+- kubectl edit:edits the configuration of a resource.
 - kubectl delete <resource_type> <resource_name>:deletes a resource from the cluster.
 - kubectl describe <resource_type> <resource_name>:displays detailed information about a resource.
 - kubectl logs:displays the logs of a container in a pod.
@@ -69,6 +72,7 @@ commands:
 3. Deployments: provide features for updates or rollbacks in ReplicaSets and Pods.Deployment is a higher level of abstraction than ReplicaSet.
 - kubectl get deployments: displays the deployments in the cluster.
 - kubectl create  deployment -f <filename>:creates a deployment from a file.
+- kubectl edit deployment <deployment-name>:edits the deployment configuration.
 - kubectl apply -f <filename>:applies the configuration from a file.
 - kubectl expose deployment <deployment-name> --port=<port>:exposes a deployment as a service on the specified port.
 - kubectl create deployment <deployment-name> --image=<image-name>:creates a deployment with the specified image.
@@ -90,11 +94,11 @@ example:
                 # specification for deployment2 '''
 
 
-
-- kubectl describe <resource-name>:displays detailed information about a resource.
-- kubectl scale --replicas=<number> <fileename>:scales a deployment to the specified number of replicas.
-
-- kubectl logs <pod-name>:displays the logs of a pod.
+4. Services: provides networking to the pods in the cluster. types of network services:
+- ClusterIP: exposes the service on a cluster-internal IP.
+- NodePort: exposes the service on each node's IP at a static port.
+- LoadBalancer: exposes the service externally using a cloud provider's load balancer.
+- ExternalName: maps the service to the contents of the externalName field.
 
 
 
