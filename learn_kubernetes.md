@@ -20,6 +20,7 @@ The worker node consists of the following components:
 - Container Runtime: Runtime used to run the containers.(DOCKER or containerd)
 - Pod:is the smallest unit of deployment in kubernetes.consists of one or more containers that share the same network and storage. (running containers)
 
+
 ## NOTE: 
 In Kubernetes, resources are identified by their kind and metadata.name fields. This means that the configuration can be in any file, and as long as the kind and metadata.name match an existing resource, that resource will be updated. If the kind and metadata.name do not match any existing resource, a new resource will be created.
 
@@ -100,9 +101,11 @@ example:
 - LoadBalancer: exposes the service externally using a cloud provider's load balancer.
 - ExternalName: maps the service to the contents of the externalName field.
 
-
-
-
+> each pod has a unique IP address, and all containers in the pod share the same network namespace, including the IP address and network ports. communication between two pods is done using the pod IP address.
+> services provide a stable IP address and DNS name for a set of pods, and they can load balance traffic between the pods. but to connect to a perticular pod, we need to use the pod IP address(not-prefered) or headless service (prefered).
+> nodeport service is used to expose the service on each node's IP at a static port (not-prefered). each nodeport service creates a clusterip service to route the traffic to the pods. the static port is in the range of 30000-32767.
+> loadbalancer service is used to expose the service externally securely (prefered). it creates a nodeport and a clusterip service.
+> clusterip exposes the port on cluster level and nodeport exposes the port on node level and loadbalancer exposes the node port securely.
 
 
 # K8 yaml file structure:
@@ -221,6 +224,6 @@ spec:
         spec:
             containers:
             - name: mycontainer
-                image: nginx
+              image: nginx
     '''
 
