@@ -107,7 +107,22 @@ example:
 > loadbalancer service is used to expose the service externally securely (prefered). it creates a nodeport and a clusterip service.
 > clusterip exposes the port on cluster level and nodeport exposes the port on node level and loadbalancer exposes the node port securely.
 
+5. Secrets: are used to store sensitive information like passwords, tokens, and keys. secrets are stored in etcd in base64 encoded format.
+- kubectl create secret generic <secret-name> --from-literal=<key>=<value>: creates a secret from a literal value.
+- kubectl apply -f <filename>: applies the configuration from a file.
 
+
+example:
+'''
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysecret
+type: Opaque
+data:
+    username: "base64encodedusername" 
+    password: "base64encodedpassword" 
+'''
 # K8 yaml file structure:
 
 - apiVersion:specifies the version of the kubernetes API.
@@ -187,6 +202,9 @@ spec:
     containers:
     - name: mycontainer
         image: nginx
+        ports:
+        - containerPort: 80
+
     '''
 
 basic example for service yaml file:
@@ -225,5 +243,12 @@ spec:
             containers:
             - name: mycontainer
               image: nginx
+            - env:
+                - name: MY_ENV
+                  value: myvalue    | valueFrom: 
+                                    |   secretKeyRef:
+                                    |           name: mysecret
+                                    |           key: mykey
+                                          
     '''
 
