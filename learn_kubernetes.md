@@ -101,6 +101,10 @@ example:
 - LoadBalancer: exposes the service externally using a cloud provider's load balancer.
 - ExternalName: maps the service to the contents of the externalName field.
 
+- kubectl port-forward <pod-name> <local-port>:<pod-port>:forwards the traffic from a local port to a pod port.
+- kubectl expose deployment <deployment-name> --port=<port>:exposes a deployment as a service on the specified port.
+
+
 > each pod has a unique IP address, and all containers in the pod share the same network namespace, including the IP address and network ports. communication between two pods is done using the pod IP address.
 > services provide a stable IP address and DNS name for a set of pods, and they can load balance traffic between the pods. but to connect to a perticular pod, we need to use the pod IP address(not-prefered) or headless service (prefered).
 > nodeport service is used to expose the service on each node's IP at a static port (not-prefered). each nodeport service creates a clusterip service to route the traffic to the pods. the static port is in the range of 30000-32767.
