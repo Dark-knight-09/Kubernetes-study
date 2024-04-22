@@ -37,6 +37,7 @@ types of resources in k8s:
 
 commands:
 
+- kubectl api-resources: displays the resources in the cluster.
 - kubectl version:displays the client and server version of kubectl.
 - kubectl help:displays the help information for kubectl.
 - kubectl get <resource_type> <resource_name>:displays the resources in the cluster.
@@ -115,6 +116,48 @@ example:
 - kubectl create secret generic <secret-name> --from-literal=<key>=<value>: creates a secret from a literal value.
 - kubectl apply -f <filename>: applies the configuration from a file.
 
+6. ConfigMaps: are used to store configuration data in key-value pairs. configmaps are stored in etcd in plain text format.
+- kubectl create configmap <configmap-name> --from-literal=<key>=<value>: creates a configmap from a literal value.
+'''
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myconfigmap
+
+data:
+    key1: value1
+    key2: value2.namespace_name  # to use configmap values present in a different namespace
+'''
+
+7. Namespaces: are used to group and isolate resources. each namespace has its own resources like pods, services, secrets, and configmaps.
+> secret and configmap values can only be accessed by the pods in the same namespace.
+> pods can communicate with each other across namespaces.
+> Namespace can be used for resource isolation, access control, and resource quota.
+> Namespace can be used for blue-green deployment, canary deployment, and multi-tenancy.
+> volume, persistant volume and node
+
+# NOTE: kubens and kubectx is external tool which allows for switching between namespaces and contexts respectively.
+
+- kubectl get namespaces: displays the namespaces in the cluster.
+- kubectl create namespace <namespace-name>: creates a namespace.
+- kubectl apply -f <filename>: applies the configuration from a file.
+- kubectl get pods -n <namespace-name>: displays the pods in a namespace.
+- kubectl get services -n <namespace-name>: displays the services in a namespace.
+
+'''
+apiVersion: v1
+kind: congigMap
+metadata:
+  name: mynamespace
+  namespace: mynamespace
+
+data:
+    key1: value1
+    key2: value2
+
+'''
+
+8. ingress: is an API object that manages external access to services in a cluster, typically HTTP. it provides load balancing, SSL termination, and name-based virtual hosting.
 
 example:
 '''
