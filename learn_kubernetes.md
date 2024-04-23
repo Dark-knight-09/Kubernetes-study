@@ -115,6 +115,17 @@ example:
 5. Secrets: are used to store sensitive information like passwords, tokens, and keys. secrets are stored in etcd in base64 encoded format.
 - kubectl create secret generic <secret-name> --from-literal=<key>=<value>: creates a secret from a literal value.
 - kubectl apply -f <filename>: applies the configuration from a file.
+example:
+'''
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysecret
+type: Opaque
+data:
+    username: "base64encodedusername" 
+    password: "base64encodedpassword" 
+'''
 
 6. ConfigMaps: are used to store configuration data in key-value pairs. configmaps are stored in etcd in plain text format.
 - kubectl create configmap <configmap-name> --from-literal=<key>=<value>: creates a configmap from a literal value.
@@ -158,18 +169,45 @@ data:
 '''
 
 8. ingress: is an API object that manages external access to services in a cluster, typically HTTP. it provides load balancing, SSL termination, and name-based virtual hosting.
+> The Ingress resource is a set of rules for routing external traffic to services. ingress controller is a pod running a proxy software that enforces the rules defined in the ingress resource.
+> Before creating an Ingress resource, the Ingress Controller should be running in your cluster. There are several Ingress Controllers (proxy) to choose from, including Nginx, Traefik, Kong and others. In cloud aws has ALB Ingress Controller and GCP has GCE Ingress Controller.
 
-example:
+- kubectl get ingress: displays the ingress resources in the cluster.
+
+'''
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myingress
+spec:
+    tls:
+    - hosts:
+        - myhost.com
+        secretName: mysecret
+    rules:
+    - host: myhost.com         # host name
+        http:                   
+        paths:                  # paths to route the traffic
+        - path: /                # path to route the traffic
+            pathType: Prefix      # type of path matching
+            backend:
+                service:
+                    name: myservice
+                    port:
+                        number: 80
+'''
 '''
 apiVersion: v1
 kind: Secret
 metadata:
-  name: mysecret
-type: Opaque
+    name: my-tls-secret
+    namespace: default
+type: kubernetes.io/tls
 data:
-    username: "base64encodedusername" 
-    password: "base64encodedpassword" 
+    tls.crt: <base64-encoded-certificate>
+    tls.key: <base64-encoded-key>
 '''
+
 # K8 yaml file structure:
 
 - apiVersion:specifies the version of the kubernetes API.
