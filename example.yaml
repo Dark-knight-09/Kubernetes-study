@@ -1,0 +1,62 @@
+'''
+basic example for pod yaml file:
+'''
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+spec:
+    containers:
+    - name: mycontainer
+        image: nginx
+        ports:
+        - containerPort: 80
+
+---
+'''
+basic example for service yaml file:
+'''
+apiVersion: v1
+kind: Service
+metadata:
+  name: myservice   
+spec:
+    selector:
+        app: myapp
+    ports:
+        - protocol: TCP
+        port: 80
+        targetPort: 80
+    type: LoadBalancer
+
+---
+'''
+basic example for replica set yaml file:
+'''
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myreplicaset
+
+spec:
+    replicas: 3
+    selector:
+        matchLabels:
+            app: myapp
+    template:
+        metadata:
+            labels:
+                app: myapp
+        spec:
+            containers:
+            - name: mycontainer
+              image: nginx
+            - env:
+                - name: MY_ENV
+                  value: myvalue    | valueFrom: 
+                                    |   secretKeyRef:
+                                    |           name: mysecret
+                                    |           key: mykey
+                                          
+
+

@@ -207,6 +207,87 @@ data:
     tls.crt: <base64-encoded-certificate>
     tls.key: <base64-encoded-key>
 '''
+9. volumes: are used to persist data in kubernetes. there are different types of volumes available in kubernetes.
+1. emptyDir: is a temporary volume that is created when a pod is assigned to a node and deleted when the pod is removed from the node.
+2. hostPath: mounts a file or directory from the host node's filesystem into the pod.
+3. secret: mounts a secret as a volume in a pod.
+4. configMap: mounts a config map as a volume in a pod.
+5. persistentVolumeClaim: mounts a persistent volume claim as a volume in a pod.
+6. nfs: mounts an NFS share as a volume in a pod.
+7. storageClass: is used to dynamically provision persistent volumes.
+8. persistentVolume: is a piece of storage in the cluster that has been provisioned by an administrator.
+
+
+>> adminitrator creates persistent volume resource in the cluster. it can located locally, remotely or cloud.
+>> user uses persistent volume claim to request storage from the persistent volume resource.
+>> size of PV is fixed and should be initialized by admin.
+>> storage class is used to dynamically provision persistent volumes based on the storage requirements.
+>> a Persistent Volume Claim (PVC) can only bind to a single Persistent Volume (PV) at a time. The binding is a one-to-one mapping.
+
+types of access modes:
+1. ReadWriteOnce: can be mounted as read-write by a single node.
+2. ReadOnlyMany: can be mounted as read-only by many nodes.
+3. ReadWriteMany: can be mounted as read-write by many nodes.
+
+- kubectl get pv: displays the persistent volumes in the cluster.
+- kubectl get pvc: displays the persistent volume claims in the cluster.
+
+''' attack pvc to pod
+apiVersion: v1
+kind: Pod
+metadata:
+    name: my-pod
+spec:
+    containers:
+    - name: my-container
+        image: nginx
+        volumeMounts:
+        - name: my-volume
+            mountPath: /path/in/container
+    volumes:
+    - name: my-volume
+        persistentVolumeClaim:
+            claimName: my-pvc-10gb
+'''
+''' pvc configuration
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: my-pvc-10gb
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 10Gi
+    storageClassName: standard  | volumeName: my-pv
+'''
+''' persistent volume resource congifuration
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: my-pv
+spec:
+    capacity:
+        storage: 100Gi
+    accessModes:
+        - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Retain
+    storageClassName: standard
+    hostPath:
+        path: "/mnt/data"
+'''
+'''pv storage class configuration
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+    name: ssd
+provisioner: kubernetes.io/gce-pd
+parameters:
+    type: pd-ssd
+'''
+
+
 
 # K8 yaml file structure:
 
@@ -274,66 +355,3 @@ data:
         - StorageClass
         - VolumeAttachment
         - StorageState
-
-
-
-basic example for pod yaml file:
-'''
-apiVersion: v1
-kind: Pod
-metadata:
-  name: mypod
-spec:
-    containers:
-    - name: mycontainer
-        image: nginx
-        ports:
-        - containerPort: 80
-
-    '''
-
-basic example for service yaml file:
-'''
-apiVersion: v1
-kind: Service
-metadata:
-  name: myservice   
-spec:
-    selector:
-        app: myapp
-    ports:
-        - protocol: TCP
-        port: 80
-        targetPort: 80
-    type: LoadBalancer
-    '''
-
-basic example for replica set yaml file:
-'''
-apiVersion: apps/v1
-kind: ReplicaSet
-metadata:
-  name: myreplicaset
-
-spec:
-    replicas: 3
-    selector:
-        matchLabels:
-            app: myapp
-    template:
-        metadata:
-            labels:
-                app: myapp
-        spec:
-            containers:
-            - name: mycontainer
-              image: nginx
-            - env:
-                - name: MY_ENV
-                  value: myvalue    | valueFrom: 
-                                    |   secretKeyRef:
-                                    |           name: mysecret
-                                    |           key: mykey
-                                          
-    '''
-
