@@ -207,6 +207,8 @@ data:
     tls.crt: <base64-encoded-certificate>
     tls.key: <base64-encoded-key>
 '''
+
+
 9. volumes: are used to persist data in kubernetes. there are different types of volumes available in kubernetes.
 1. emptyDir: is a temporary volume that is created when a pod is assigned to a node and deleted when the pod is removed from the node.
 2. hostPath: mounts a file or directory from the host node's filesystem into the pod.
@@ -223,6 +225,7 @@ data:
 >> size of PV is fixed and should be initialized by admin.
 >> storage class is used to dynamically provision persistent volumes based on the storage requirements.
 >> a Persistent Volume Claim (PVC) can only bind to a single Persistent Volume (PV) at a time. The binding is a one-to-one mapping.
+>> if same PVC is used by multiple pods, then the data will be shared between the pods.
 
 types of access modes:
 1. ReadWriteOnce: can be mounted as read-write by a single node.
@@ -232,7 +235,7 @@ types of access modes:
 - kubectl get pv: displays the persistent volumes in the cluster.
 - kubectl get pvc: displays the persistent volume claims in the cluster.
 
-''' attack pvc to pod
+''' attach pvc to pod
 apiVersion: v1
 kind: Pod
 metadata:
@@ -277,7 +280,7 @@ spec:
     hostPath:
         path: "/mnt/data"
 '''
-'''pv storage class configuration
+'''dynamic pv storage class configuration
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -287,6 +290,50 @@ parameters:
     type: pd-ssd
 '''
 
+10. StatefulSets: is a service that can be used to deployment and scaling of a set of stateful pods (requires persistant storage to run properly). it is used to run stateful applications like databases, caches, and key-value stores.
+
+>> StatefulSets are used to manage the deployment and scaling of a set of stateful pods. StatefulSets are used to run stateful applications like databases, caches, and key-value stores.
+>> StatefulSets provide guarantees about the ordering and uniqueness of the pods. Each pod in a StatefulSet has a unique identity that is maintained across rescheduling.
+>> Each pod in a StatefulSet has a unique identity that is maintained across rescheduling. 
+>> The genreally pods are created in order, and each pod is created only after the previous pod is running and ready. it can over-ridden by setting the podManagementPolicy to Parallel.
+>> persistent volume claim templates are used to dynamically provision persistent volumes for each pod in the StatefulSet.
+>> persistent volume is retained even after the pod is deleted, and it can be reattached to a new version of same pod.
+>> headless service is used to access the pods in the StatefulSet directly without load balancing.
+
+example:
+'''
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    name: my-statefulset
+spec:
+    serviceName: "my-service"
+    replicas: 5
+    selector:
+        matchLabels:
+            app: my-app
+    template:
+        metadata:
+            labels:
+                app: my-app
+        spec:
+            containers:
+            - name: my-container
+                image: nginx
+                volumeMounts:
+                - name: my-volume
+                    mountPath: /path/in/container
+    volumeClaimTemplates:
+    - metadata:
+            name: my-volume
+        spec:
+            accessModes: [ "ReadWriteOnce" ]
+            resources:
+                requests:
+                    storage: 10Gi
+'''
+
+11. DaemonSets: ensures that all (or some) nodes run a copy of a pod. it is used to run a daemon on every node in the cluster.
 
 
 # K8 yaml file structure:
