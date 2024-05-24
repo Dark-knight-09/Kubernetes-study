@@ -402,3 +402,14 @@ spec:
         - StorageClass
         - VolumeAttachment
         - StorageState
+
+
+
+Note: Scheduling of Pods in selective nodes.
+- nodeSelector: is used to schedule the pods on specific nodes based on the labels assigned to the nodes.
+- affinity: is used to schedule the pods based on the affinity or anti-affinity rules.
+  - nodeAffinity: is used to schedule the pods based on the affinity or anti-affinity rules with the nodes.
+  - podAffinity: is used to schedule the pods based on the affinity or anti-affinity rules with other pods.
+  - antiAffinity: is used to schedule the pods based on the anti-affinity rules with the nodes or other pods. 
+- namespaceSelector: is used to schedule the pods on nodes with specific labels in the namespace.
+- tolerations: is used to schedule the pods on nodes with taints.
