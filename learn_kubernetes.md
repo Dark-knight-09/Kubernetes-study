@@ -8,7 +8,7 @@ Kubernetes architecture consists of a master node and a worker node.
 
 # Master Node
 The master node consists of the following components:
-- API Server:is the front-end of the control plane.exposes the kubernetes API, which is used by the clients to interact with the cluster.
+- API Server:is the front-end of the control plane. exposes the kubernetes API, which is used by the clients to interact with the cluster.
 - Controller Manager:is responsible for running the controller processes, which are responsible for maintaining the desired state of the cluster.
 - Scheduler:is responsible for scheduling the pods on the worker nodes based on the resource requirements and constraints.
 - etcd:is a distributed key-value store that stores the cluster state. 
@@ -33,6 +33,21 @@ types of resources in k8s:
 3. Deployments : manages ReplicaSets and Pods
 4. Services : provides networking to the pods
 5. Nodes : physical or virtual machines in the cluster
+6. Namespaces : used to group and isolate resources
+7. ConfigMaps : used to store configuration data
+8. Secrets : used to store sensitive information
+9. Ingress : manages external access to services
+10. Volumes : used to persist data in k8s
+11. StatefulSets : used to run stateful applications
+12. DaemonSets : ensures that all nodes run a copy of a pod
+13. Jobs : runs a pod to completion
+14. CronJobs : runs a job on a schedule
+15. PersistentVolumes : is a piece of storage in the cluster    
+16. PersistentVolumeClaims : is a request for storage by a user
+17. StorageClasses : is used to dynamically provision persistent volumes
+18. HorizontalPodAutoscaler : automatically scales the number of pods in a deployment
+19. NetworkPolicy : is used to control the traffic flow between pods
+
 
 
 commands:
@@ -41,6 +56,8 @@ commands:
 - kubectl version:displays the client and server version of kubectl.
 - kubectl help:displays the help information for kubectl.
 - kubectl get <resource_type> <resource_name>:displays the resources in the cluster.
+- kubectl config view:displays the kubectl configuration.
+
 - kubectl create:creates a resource in the cluster.
 - kubectl apply:applies the configuration to the cluster.
 - kubectl edit:edits the configuration of a resource.
@@ -59,6 +76,16 @@ commands:
 - kubectl get services:displays the services in the cluster.
 - kubectl get deployments:  displays the deployments in the cluster.
 - kubectl get replicasets:  displays the replica sets in the cluster.
+
+# config commands:
+- kubectl config view:displays the kubectl configuration.
+- kubectl config use-context <context_name>:switches the context in the kubectl configuration.
+- kubectl config set-context <context_name>:sets the context in the kubectl configuration.
+- kubectl config current-context:displays the current context in the kubectl configuration.
+- kubectl config get-contexts:displays the contexts in the kubectl configuration.
+- kubectl config delete-context <context_name>:deletes a context from the kubectl configuration.
+- kubectl config set-cluster <cluster_name>:sets the cluster in the kubectl configuration.
+
 
 1. pods: smallest unit of deployment in k8s.consists of one or more containers that share the same network and storage.
 - kubectl create pod <pod-name> --image=<image-name>: creates a pod with the specified image.
