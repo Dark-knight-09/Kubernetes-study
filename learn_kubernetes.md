@@ -40,12 +40,12 @@ commands:
 - kubectl api-resources: displays the resources in the cluster.
 - kubectl version:displays the client and server version of kubectl.
 - kubectl help:displays the help information for kubectl.
-- kubectl get [resource_type] [resource_name]:displays the resources in the cluster.
+- kubectl get <resource_type> <resource_name>:displays the resources in the cluster.
 - kubectl create:creates a resource in the cluster.
 - kubectl apply:applies the configuration to the cluster.
 - kubectl edit:edits the configuration of a resource.
-- kubectl delete [resource_type] [resource_name]:deletes a resource from the cluster.
-- kubectl describe [resource_type] [resource_name]:displays detailed information about a resource.
+- kubectl delete <resource_type> <resource_name>:deletes a resource from the cluster.
+- kubectl describe <resource_type> <resource_name>:displays detailed information about a resource.
 - kubectl logs:displays the logs of a container in a pod.
 - kubectl exec:executes a command in a container in a pod.
 - kubectl run:creates a new pod or deployment.
@@ -61,23 +61,23 @@ commands:
 - kubectl get replicasets:  displays the replica sets in the cluster.
 
 1. pods: smallest unit of deployment in k8s.consists of one or more containers that share the same network and storage.
-- kubectl create pod [pod-name] --image=[image-name]: creates a pod with the specified image.
-- kubectl create pod -f [filename]: creates a pod from a file.
-- kubectl describe pod [pod-name]: displays detailed information about a pod.
-- kubectl exec -it [pod-name] -- /bin/bash: executes a command in a pod.
-- kubectl logs [pod-name]: displays the logs of a pod.
+- kubectl create pod <pod-name> --image=<image-name>: creates a pod with the specified image.
+- kubectl create pod -f <filename>: creates a pod from a file.
+- kubectl describe pod <pod-name>: displays detailed information about a pod.
+- kubectl exec -it <pod-name> -- /bin/bash: executes a command in a pod.
+- kubectl logs <pod-name>: displays the logs of a pod.
 
 2. ReplicaSets: is collection of same pods (number of pods pre-defined in a file), ensures that a specific number of pod are running in the cluster.
 - kubectl get rs: displays the replica sets in the cluster.
-- kubectl describe rs [replicaset-name]: displays detailed information about a replica set.
+- kubectl describe rs <replicaset-name>: displays detailed information about a replica set.
 
 3. Deployments: provide features for updates or rollbacks in ReplicaSets and Pods.Deployment is a higher level of abstraction than ReplicaSet.
 - kubectl get deployments: displays the deployments in the cluster.
-- kubectl create  deployment -f [filename]:creates a deployment from a file.
-- kubectl edit deployment [deployment-name]:edits the deployment configuration.
-- kubectl apply -f [filename]:applies the configuration from a file.
-- kubectl expose deployment [deployment-name] --port=[port]:exposes a deployment as a service on the specified port.
-- kubectl create deployment [deployment-name] --image=[image-name]:creates a deployment with the specified image.
+- kubectl create  deployment -f <filename>:creates a deployment from a file.
+- kubectl edit deployment <deployment-name>:edits the deployment configuration.
+- kubectl apply -f <filename>:applies the configuration from a file.
+- kubectl expose deployment <deployment-name> --port=<port>:exposes a deployment as a service on the specified port.
+- kubectl create deployment <deployment-name> --image=<image-name>:creates a deployment with the specified image.
 
 # Note: multiple deployments can be created in a single file using '---' separator.
 example: 
@@ -102,8 +102,8 @@ example:
 - LoadBalancer: exposes the service externally using a cloud provider's load balancer.
 - ExternalName: maps the service to the contents of the externalName field.
 
-- kubectl port-forward [pod-name] [local-port]:[pod-port]: forwards the traffic from a local port to a pod port.
-- kubectl expose deployment [deployment-name] --port=[port]: exposes a deployment as a service on the specified port.
+- kubectl port-forward <pod-name> <local-port>:<pod-port>: forwards the traffic from a local port to a pod port.
+- kubectl expose deployment <deployment-name> --port=<port>: exposes a deployment as a service on the specified port.
 
 
 > each pod has a unique IP address, and all containers in the pod share the same network namespace, including the IP address and network ports. communication between two pods is done using the pod IP address.
@@ -113,8 +113,8 @@ example:
 > clusterip exposes the port on cluster level and nodeport exposes the port on node level and loadbalancer exposes the node port securely.
 
 5. Secrets: are used to store sensitive information like passwords, tokens, and keys. secrets are stored in etcd in base64 encoded format.
-- kubectl create secret generic [secret-name] --from-literal=[key]=[value]: creates a secret from a literal value.
-- kubectl apply -f [filename]: applies the configuration from a file.
+- kubectl create secret generic <secret-name> --from-literal=<key>=<value>: creates a secret from a literal value.
+- kubectl apply -f <filename>: applies the configuration from a file.
 example:
 '''
 apiVersion: v1
@@ -128,7 +128,7 @@ data:
 '''
 
 6. ConfigMaps: are used to store configuration data in key-value pairs. configmaps are stored in etcd in plain text format.
-- kubectl create configmap [configmap-name] --from-literal=[key]=[value]: creates a configmap from a literal value.
+- kubectl create configmap <configmap-name> --from-literal=<key>=<value>: creates a configmap from a literal value.
 '''
 apiVersion: v1
 kind: ConfigMap
@@ -150,10 +150,10 @@ data:
 # NOTE: kubens and kubectx is external tool which allows for switching between namespaces and contexts respectively.
 
 - kubectl get namespaces: displays the namespaces in the cluster.
-- kubectl create namespace [namespace-name]: creates a namespace.
-- kubectl apply -f [filename]: applies the configuration from a file.
-- kubectl get pods -n [namespace-name]: displays the pods in a namespace.
-- kubectl get services -n [namespace-name]: displays the services in a namespace.
+- kubectl create namespace <namespace-name>: creates a namespace.
+- kubectl apply -f <filename>: applies the configuration from a file.
+- kubectl get pods -n <namespace-name>: displays the pods in a namespace.
+- kubectl get services -n <namespace-name>: displays the services in a namespace.
 
 '''
 apiVersion: v1
@@ -204,8 +204,8 @@ metadata:
     namespace: default
 type: kubernetes.io/tls
 data:
-    tls.crt: [base64-encoded-certificate]
-    tls.key: [base64-encoded-key]
+    tls.crt: <base64-encoded-certificate>
+    tls.key: <base64-encoded-key>
 '''
 
 
@@ -327,7 +327,7 @@ spec:
     - metadata:
             name: my-volume
         spec:
-            accessModes: [ "ReadWriteOnce" ]
+            accessModes: < "ReadWriteOnce" >
             resources:
                 requests:
                     storage: 10Gi
