@@ -33,22 +33,22 @@ mychart/
 
 
 basic commands:
-- helm repo add [repo-name] [repo-url] # add a helm repository
+- helm repo add <repo-name> <repo-url> # add a helm repository
 - helm repo update # update the list of available charts from the repositories
-- helm search repo [chart-name] # search for a chart in the repositories
-- helm install [chart-name] [release-name] # install a chart as a release
+- helm search repo <chart-name> # search for a chart in the repositories
+- helm install <chart-name> <release-name> # install a chart as a release
 - helm list # list all releases
-- helm status [release-name] # get the status of a release
-- helm upgrade [release-name] [chart-name] # upgrade a release to a new version of the chart
-- helm rollback [release-name] [revision-number] # rollback a release to a previous version
-- helm uninstall [release-name] # uninstall a release
-- helm show values [chart-name] # show the default values for a chart
-- helm show chart [chart-name] # show information about a chart
-- helm show readme [chart-name] # show the README for a chart
-- helm lint [chart-directory] # lint a chart 
-- helm package [chart-directory] # package a chart into a tarball
-- helm template [chart-name] # render the templates in a chart
-- helm history [release-name] # show the history of a release
-- helm get values [release-name] # get the values of a release
-- helm get all [release-name] # get all information about a release
+- helm status <release-name> # get the status of a release
+- helm upgrade <release-name> <chart-name> # upgrade a release to a new version of the chart
+- helm rollback <release-name> <revision-number> # rollback a release to a previous version
+- helm uninstall <release-name> # uninstall a release
+- helm show values <chart-name> # show the default values for a chart
+- helm show chart <chart-name> # show information about a chart
+- helm show readme <chart-name> # show the README for a chart
+- helm lint <chart-directory> # lint a chart 
+- helm package <chart-directory> # package a chart into a tarball
+- helm template <chart-name> # render the templates in a chart
+- helm history <release-name> # show the history of a release
+- helm get values <release-name> # get the values of a release
+- helm get all <release-name> # get all information about a release
 
