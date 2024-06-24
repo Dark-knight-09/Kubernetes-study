@@ -57,6 +57,12 @@ commands:
 - kubectl help:displays the help information for kubectl.
 - kubectl get <resource_type> <resource_name>:displays the resources in the cluster.
 - kubectl config view:displays the kubectl configuration.
+- kubectl cluster-info:displays the cluster information.
+kubectl config set-context --current --namespace=<namespace>: sets the namespace in the current context.
+- kubectl config set-context --current --cluster=<cluster>: sets the cluster in the current context.
+- kubectl config set-context --current --user=<user>: sets the user in the current context.
+- kubectl config use-context <context_name>: switches the context in the kubectl configuration.
+
 
 - kubectl create:creates a resource in the cluster.
 - kubectl apply:applies the configuration to the cluster.
